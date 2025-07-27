@@ -12,7 +12,7 @@
 </ul>
 
 ## Judul Studi Kasus
-<p>Masak Cuyy</p>
+<p>Sebuah aplikasi resep masakan modern berbasis Java, dibangun menggunakan Spring Boot, Thymeleaf, dan Spring Security. Mendukung autentikasi pengguna, tambah resep, dan tampilan modern dengan Bootstrap 5.</p>
 
 ## Penjelasan Studi Kasus
 <p>Lorem ipsum sir dolor amet.</p>
