@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> <head>
+    <meta charset="UTF-8">
+    <title th:text="'Edit ' + ${recipe.title}"></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Recipe: <span th:text="${recipe.title}"></span></h1>
+
+        <form th:action="@{/my-recipes/edit/{id}(id=${recipe.id})}" th:object="${recipe}" method="post" enctype="multipart/form-data">
+            <div>
+                <label for="title">Title:</label>
+                <input type="text" id="title" th:field="*{title}" required>
+            </div>
+            <div>
+                <label for="description">Description:</label>
+                <textarea id="description" th:field="*{description}" rows="3"></textarea> 
+            </div>
+            <div>
+                <label for="ingredients">Ingredients:</label>
+                <textarea id="ingredients" th:field="*{ingredients}" required></textarea>
+            </div>
+            <div>
+                <label for="instructions">Instructions:</label>
+                <textarea id="instructions" th:field="*{instructions}" required></textarea>
+            </div>
+            <div>
+                <label for="imageFile">Change Image (optional):</label>
+                <input type="file" id="imageFile" name="imageFile" accept="image/*">
+                <div th:if="${recipe.imageUrl}" class="current-image-preview">
+                    <small>Current Image:</small><br>
+                    <img th:src="${recipe.imageUrl}" alt="Current Recipe Image">
+                </div>
+            </div>
+            <div>
+                <button type="submit">Update Recipe</button>
+            </div>
+        </form>
+        <div class="back-link">
+            <a href="/my-recipes">Back to My Recipes</a>
+        </div>
+    </div>
+</body>
+</html>

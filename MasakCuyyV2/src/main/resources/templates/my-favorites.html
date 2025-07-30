@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>My Favorite Recipes - MasakCuyy</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="navbar">
+        <h1>MasakCuyy</h1>
+        <div>
+            <a th:href="@{/my-recipes}">My Recipes</a>
+            <a th:href="@{/my-favorites}">My Favorites</a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="content-area">
+        <h1>My Favorite Recipes</h1>
+
+        <div th:if="${favorites.isEmpty()}">
+            <p>You haven't favorited any recipes yet.</p>
+        </div>
+
+        <div class="recipe-grid">
+            <div th:each="fav : ${favorites}" class="recipe-card">
+                <div th:if="${fav.recipe.imageUrl}">
+                    <img th:src="${fav.recipe.imageUrl}" alt="Recipe Image">
+                </div>
+                <div class="card-content">
+                    <h3><a th:href="@{/recipes/{id}(id=${fav.recipe.id})}" th:text="${fav.recipe.title}">Recipe Title</a></h3>
+                    <p th:text="${fav.recipe.description} ?: ${fav.recipe.instructions.substring(0, T(Math).min(fav.recipe.instructions.length(), 100))} + '...'"></p>
+                    <p class="author">By: <span th:text="${fav.recipe.user.username}"></span></p>
+                </div>
+                <div class="card-actions">
+                    <form th:action="@{/recipes/{id}/toggle-favorite(id=${fav.recipe.id})}" method="post">
+                        <button type="submit" class="delete-button">Remove from Favorites</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
