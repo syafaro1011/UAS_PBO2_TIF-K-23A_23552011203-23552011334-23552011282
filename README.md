@@ -33,6 +33,6 @@
 
 ## Demo Proyek
 <ul>
-  <li>Github: <a href="">Github</a></li>
-  <li>Youtube: <a href="">Youtube</a></li>
+  <li>Github: <a href="https://github.com/syafaro1011/UAS_PBO2_TIF-K-23A_23552011203-23552011334-23552011282">Github</a></li>
+  <li>Youtube: <a href="https://youtu.be/GXseqayUa38">Youtube</a></li>
 </ul>
