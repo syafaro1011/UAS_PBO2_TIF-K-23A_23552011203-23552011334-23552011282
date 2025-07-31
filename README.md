@@ -6,16 +6,16 @@
 
 ## Profil
 <ul>
-  <li>Nama: Syaiful Fathur Rozaq, Muhammad Rifky Fahrosy, Farhandhika Nurrohman</li>
+  <li>Nama: Syaiful Fathur Rozaq, Muhammad Rifki Fahrosy, Farhandhika Nurrohman</li>
   <li>NIM: 23552011282, 23552011334, 23552011203</li>
   <li>Studi Kasus: Masak Cuyy</li>
 </ul>
 
 ## Judul Studi Kasus
-<p>Sebuah aplikasi resep masakan modern berbasis Java, dibangun menggunakan Spring Boot, Thymeleaf, dan Spring Security. Mendukung autentikasi pengguna, tambah resep, dan tampilan modern dengan Bootstrap 5.</p>
+<p>Masak Cuy (Resep Masakan Web System)</p>
 
 ## Penjelasan Studi Kasus
-<p>Lorem ipsum sir dolor amet.</p>
+<p>Sebuah aplikasi resep masakan modern berbasis Java, dibangun menggunakan Spring Boot, Thymeleaf, dan Spring Security. Mendukung autentikasi pengguna, tambah resep, dan tampilan modern dengan Bootstrap 5.</p>
 
 ## Penjelasan 4 Pilar OOP dalam Studi Kasus
 
