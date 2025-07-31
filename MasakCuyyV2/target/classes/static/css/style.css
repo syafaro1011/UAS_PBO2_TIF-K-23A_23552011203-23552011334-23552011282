@@ -1,29 +1,56 @@
-/* src/main/resources/static/css/style.css */
+/* General / Base Styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
     margin: 0;
+    padding-top: 60px; /* Space for fixed navbar */
+    line-height: 1.6;
+    color: #333;
 }
 
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 2.2em; /* Consistent with recipe-detail h1 */
+    text-align: center; /* Default for h1 if not overridden */
+}
+
+h2 {
+    color: #007bff;
+    margin-top: 30px;
+    margin-bottom: 15px; /* Consistent spacing */
+    border-bottom: 2px solid #007bff; /* Consistent with recipe-detail h2 */
+    padding-bottom: 5px;
+    font-size: 1.5em; /* Consistent with recipe-detail h2 */
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    transition: text-decoration 0.2s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Container for centered forms (e.g., Login, Register, standalone Add Recipe) */
 .container {
     background-color: #fff;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
-    text-align: center;
+    max-width: 400px; /* Smaller max-width for forms */
+    margin: 60px auto 20px auto; /* Adjust margin to account for navbar */
+    text-align: center; /* For centering content within container */
 }
 
-h1 {
-    color: #333;
-    margin-bottom: 20px;
-}
-
+/* Form Elements */
 form div {
     margin-bottom: 15px;
     text-align: left;
@@ -37,62 +64,107 @@ label {
 
 input[type="text"],
 input[type="email"],
-input[type="password"] {
-    width: calc(100% - 20px);
+input[type="password"],
+input[type="file"], /* Added for file inputs in forms */
+textarea { /* Added for textarea inputs in forms */
+    width: calc(100% - 20px); /* Adjust width to account for padding */
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     box-sizing: border-box;
+    font-size: 1em; /* Ensure consistent font size */
 }
 
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* General Button Styles */
 button {
-    background-color: #28a745; /* Green */
-    color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
-    width: 100%;
+    font-size: 1em;
+    width: 100%; /* Default to full width for form buttons */
+    box-sizing: border-box;
+    transition: background-color 0.2s ease;
 }
 
-button:hover {
+/* Specific Button Colors */
+button[type="submit"], /* Default submit button green */
+.add-recipe-button {
+    background-color: #28a745; /* Green */
+    color: white;
+}
+button[type="submit"]:hover,
+.add-recipe-button:hover {
     background-color: #218838;
 }
 
+.edit-button { /* Blue for edit actions */
+    background-color: #007bff;
+    color: white;
+}
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+.delete-button,
+.logout-button { /* Red for delete/logout actions */
+    background-color: #dc3545;
+    color: white;
+}
+.delete-button:hover,
+.logout-button:hover {
+    background-color: #c82333;
+}
+
+.detail-button { /* Blue for view detail */
+    background-color: #007bff;
+    color: white;
+}
+.detail-button:hover {
+    background-color: #0056b3;
+}
+
+.favorite-button { /* Yellow for Add to Favorites */
+    background-color: #ffc107;
+    color: #333;
+}
+.favorite-button:hover {
+    background-color: #e0a800;
+}
+
+.remove-favorite-button { /* Green for Remove from Favorites */
+    background-color: #28a745;
+    color: white;
+}
+.remove-favorite-button:hover {
+    background-color: #218838;
+}
+
+
+/* Alerts */
 .alert {
     padding: 10px;
     margin-bottom: 15px;
     border-radius: 4px;
 }
-
 .alert.error {
     background-color: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
-
 .alert.success {
     background-color: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
 }
 
-p {
-    margin-top: 20px;
-}
 
-a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* General styles from style.css */
-body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding-top: 60px; }
+/* Navbar Styling */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -108,31 +180,43 @@ body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; pad
     z-index: 1000;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
-.navbar h1 { margin: 0; font-size: 24px; }
-.navbar a { color: white; text-decoration: none; padding: 8px 15px; border-radius: 5px; transition: background-color 0.3s; }
-.navbar a:hover { background-color: #555; }
-.navbar .user-info { margin-right: 20px; font-weight: bold; }
-.navbar .logout-form { display: inline; }
-.navbar .logout-button {
-    background-color: #dc3545; /* Red */
+.navbar h1 {
+    margin: 0;
+    font-size: 24px;
+    text-align: left; /* Override general h1 centering */
+}
+.navbar a {
     color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+.navbar a:hover {
+    background-color: #555;
+}
+.navbar .user-info {
+    margin-right: 20px;
+    font-weight: bold;
+}
+.navbar .logout-form {
+    display: inline; /* Keep logout button inline with other nav items */
 }
 
+
+/* Main Content Area (for home, my-recipes, recipe-detail) */
 .content-area {
     padding: 20px;
-    max-width: 1200px;
+    max-width: 1200px; /* Wider max-width for content */
     margin: 20px auto;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    text-align: center;
+    text-align: center; /* For centering search bar within content-area */
 }
 
+
+/* Section Header (for My Recipes dashboard) */
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -142,24 +226,54 @@ body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; pad
     padding-bottom: 10px;
 }
 .section-header h2 { margin: 0; }
-.add-recipe-button {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-}
-.add-recipe-button:hover { background-color: #218838; }
 
+
+/* Search Bar Component */
+.search-container {
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: center;
+}
+.search-container input[type="text"] {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px 0 0 5px;
+    box-sizing: border-box;
+    font-size: 1em;
+    vertical-align: top; /* Align with button */
+}
+.search-container button {
+    width: 20%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 1em;
+    vertical-align: top; /* Align with input */
+}
+.search-container button:hover {
+    background-color: #0056b3;
+}
+
+/* No Results Message */
+.no-results {
+    text-align: center;
+    margin-top: 30px;
+    color: #666;
+    font-size: 1.1em;
+}
+
+
+/* Recipe Grid & Card (for Home and My Recipes) */
 .recipe-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
     margin-top: 30px;
 }
-
 .recipe-card {
     border: 1px solid #eee;
     border-radius: 8px;
@@ -207,7 +321,7 @@ body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; pad
 }
 .card-actions {
     display: flex;
-    justify-content: flex-end; /* Pindahkan tombol ke kanan */
+    justify-content: flex-end; /* Move buttons to the right */
     gap: 10px;
     padding: 10px 15px 15px;
     border-top: 1px solid #eee;
@@ -221,275 +335,62 @@ body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; pad
     text-decoration: none;
     color: white;
 }
-.edit-button { background-color: #007bff; }
-.edit-button:hover { background-color: #0056b3; }
-.delete-button { background-color: #dc3545; }
-.delete-button:hover { background-color: #c82333; }
 
-/* Add recipe form specific */
+
+/* Add Recipe Form Specific (if form is a standalone page) */
 .add-recipe-form-area {
     background-color: #f9f9f9;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 0 8px rgba(0,0,0,0.05);
     margin-top: 40px;
+    max-width: 800px; /* Assuming this form can be wider */
+    margin-left: auto;
+    margin-right: auto;
 }
 .add-recipe-form-area h2 {
     text-align: center;
     margin-bottom: 25px;
     color: #333;
-}
-.add-recipe-form-area input[type="text"],
-.add-recipe-form-area textarea,
-.add-recipe-form-area input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-.add-recipe-form-area textarea {
-    min-height: 120px;
-    resize: vertical;
+    border-bottom: none; /* Override general h2 border */
 }
 .add-recipe-form-area button[type="submit"] {
-    width: auto;
+    width: auto; /* Override general button width */
     padding: 10px 25px;
     font-size: 1em;
-    background-color: #28a745;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
-/* Basic styles from style.css */
-body { font-family: Arial, sans-serif; background-color: #f4f4f4; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-.container { background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); width: 100%; max-width: 800px; text-align: left; }
-h1 { color: #333; margin-bottom: 20px; text-align: center; }
-h2 { color: #007bff; margin-top: 30px; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-p { margin-bottom: 10px; line-height: 1.6; }
-.recipe-meta {
-    font-size: 0.9em;
-    color: #777;
-    margin-bottom: 20px;
-    text-align: center;
-}
-.recipe-actions-detail {
-    text-align: center;
-    margin-top: 30px;
-}
-.recipe-actions-detail button, .recipe-actions-detail a {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    text-decoration: none;
-    display: inline-block;
-    margin: 0 10px;
-}
-.edit-button-detail {
-    background-color: #007bff; /* Blue */
-    color: white;
-}
-.edit-button-detail:hover {
-    background-color: #0056b3;
-}
-.delete-button-detail {
-    background-color: #dc3545; /* Red */
-    color: white;
-}
-.delete-button-detail:hover {
-    background-color: #c82333;
-}
-.back-link {
-    display: block;
-    margin-top: 30px;
-    text-align: center;
-}
-
-/* Basic styles, consider moving to style.css */
-body { font-family: Arial, sans-serif; background-color: #f4f4f4; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-.container { background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); width: 100%; max-width: 800px; text-align: left; }
-h1 { color: #333; margin-bottom: 20px; text-align: center; }
-h2 { color: #007bff; margin-top: 30px; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-p { margin-bottom: 10px; line-height: 1.6; }
-.recipe-meta {
-    font-size: 0.9em;
-    color: #777;
-    margin-bottom: 20px;
-    text-align: center;
-}
-.recipe-actions-detail {
-    text-align: center;
-    margin-top: 30px;
-}
-.recipe-actions-detail button, .recipe-actions-detail a {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    text-decoration: none;
-    display: inline-block;
-    margin: 0 10px;
-}
-.edit-button-detail {
-    background-color: #007bff; /* Blue */
-    color: white;
-}
-.edit-button-detail:hover {
-    background-color: #0056b3;
-}
-.delete-button-detail {
-    background-color: #dc3545; /* Red */
-    color: white;
-}
-.delete-button-detail:hover {
-    background-color: #c82333;
-}
-.back-link {
-    display: block;
-    margin-top: 30px;
-    text-align: center;
-}
-
-.search-container {
-    margin: 20px auto;
-    max-width: 600px;
-    text-align: center;
-}
-.search-container input[type="text"] {
-    width: 70%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px 0 0 5px; /* rounded left, sharp right */
-    box-sizing: border-box;
-    font-size: 1em;
-}
-.search-container button {
-    width: 20%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: 1px solid #007bff;
-    border-radius: 0 5px 5px 0; /* sharp left, rounded right */
-    cursor: pointer;
-    font-size: 1em;
-    vertical-align: top; /* Align with input */
-}
-.search-container button:hover {
-    background-color: #0056b3;
-}
-/* Style untuk pesan jika tidak ada hasil */
-.no-results {
-    text-align: center;
-    margin-top: 30px;
-    color: #666;
-    font-size: 1.1em;
-}
-/* General body styling */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding-top: 60px; /* Space for fixed navbar */
-}
-
-/* Navbar Styling */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    padding: 10px 20px;
-    color: white;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-.navbar h1 { margin: 0; font-size: 24px; }
-.navbar a { color: white; text-decoration: none; padding: 8px 15px; border-radius: 5px; transition: background-color 0.3s; }
-.navbar a:hover { background-color: #555; }
-.user-info { margin-right: 20px; font-weight: bold; }
-.logout-form { display: inline; }
-.logout-button {
-    background-color: #dc3545; /* Red */
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-/* Main Content Area */
-.content-area {
-    padding: 20px;
-    max-width: 900px;
-    margin: 20px auto;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-/* Recipe Header */
+/* Recipe Detail Specific */
 .recipe-header {
     text-align: center;
     margin-bottom: 25px;
     border-bottom: 1px solid #eee;
     padding-bottom: 15px;
 }
-.recipe-header h1 {
-    color: #333;
-    margin-bottom: 5px;
-    font-size: 2.2em;
-}
 .recipe-header .recipe-meta {
     font-size: 0.95em;
     color: #777;
 }
-
-/* Recipe Image */
 .recipe-image {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
     margin: 20px auto;
-    display: block; /* Ensures centering with text-align: center on parent */
+    display: block;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-
-/* Recipe Sections (Description, Ingredients, Instructions) */
 .recipe-section {
     margin-bottom: 25px;
 }
-.recipe-section h2 {
-    color: #007bff;
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 5px;
-    margin-bottom: 15px;
-    font-size: 1.5em;
-}
-.recipe-section p,
 .recipe-section ul,
 .recipe-section ol {
-    line-height: 1.6;
-    color: #555;
-    font-size: 1.05em;
-    margin-top: 0; /* Override default paragraph top margin */
-}
-.recipe-section ul,
-.recipe-section ol {
-    padding-left: 25px; /* Indent lists */
+    padding-left: 25px;
+    margin-top: 0;
+    color: #555; /* Match paragraph color */
+    font-size: 1.05em; /* Match paragraph font size */
 }
 .recipe-section li {
-    margin-bottom: 8px; /* Space between list items */
+    margin-bottom: 8px;
 }
 .recipe-description {
     margin-top: 15px;
@@ -497,9 +398,6 @@ body {
     color: #555;
     text-align: center;
 }
-
-
-/* Recipe Actions (Edit, Delete, Favorite) */
 .recipe-actions-detail {
     display: flex;
     justify-content: center;
@@ -511,33 +409,92 @@ body {
 .recipe-actions-detail a,
 .recipe-actions-detail button {
     padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
     font-size: 1em;
-    text-decoration: none;
-    color: white;
-    transition: background-color 0.3s ease;
+    display: inline-block; /* Ensure buttons/links are inline-block */
+    margin: 0 10px; /* Add horizontal margin */
 }
-.edit-button { background-color: #007bff; }
-.edit-button:hover { background-color: #0056b3; }
-.delete-button { background-color: #dc3545; }
-.delete-button:hover { background-color: #c82333; }
-.favorite-button { background-color: #ffc107; color: #333; } /* Yellow for Add to Favorites */
-.favorite-button:hover { background-color: #e0a800; }
-.remove-favorite-button { background-color: #28a745; } /* Green for Remove from Favorites */
-.remove-favorite-button:hover { background-color: #218838; }
-
-/* Back Link */
 .back-link {
     text-align: center;
     margin-top: 30px;
 }
 .back-link a {
-    color: #007bff;
-    text-decoration: none;
     font-size: 1.1em;
 }
-.back-link a:hover {
-    text-decoration: underline;
+
+/* --- New Sidebar Layout Styles --- */
+
+/* Make body a flex container to stack navbar and main-wrapper */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    /* Remove padding-top from body, it will be handled by main-wrapper */
+    padding-top: 0; /* Override previous padding-top */
 }
+
+/* Adjust navbar to be fixed at top and not affect main-wrapper's top */
+.navbar {
+    position: fixed; /* Keep navbar fixed */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    /* Other navbar styles remain as is */
+}
+
+/* Main wrapper for sidebar and content */
+.main-wrapper {
+    display: flex;
+    flex: 1; /* Allows main-wrapper to take up remaining vertical space */
+    padding-top: 60px; /* Space for the fixed navbar above */
+    width: 100%; /* Ensure it takes full width */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 200px; /* Lebar sidebar */
+    background-color: #333; /* Warna background sidebar, bisa disesuaikan */
+    color: white;
+    padding: 20px 0; /* Padding atas bawah */
+    display: flex;
+    flex-direction: column; /* Link vertikal */
+    gap: 10px; /* Jarak antar link */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    flex-shrink: 0; /* Mencegah sidebar menyusut */
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block; /* Agar setiap link mengambil baris penuh */
+    transition: background-color 0.3s;
+}
+
+.sidebar a:hover,
+.sidebar a.active { /* 'active' class for current page */
+    background-color: #555;
+}
+
+/* Main content wrapper next to sidebar */
+.main-content-wrapper {
+    flex: 1; /* Mengambil sisa ruang horizontal */
+    padding: 20px; /* Padding di sekitar content-area */
+    box-sizing: border-box;
+    overflow-y: auto; /* Allow content to scroll if it overflows */
+}
+
+/* Adjust content-area within the new wrapper */
+.content-area {
+    max-width: 900px; /* Batasi lebar konten utama */
+    margin: 0 auto; /* Tengahkankonten dalam main-content-wrapper */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 20px; /* Padding internal */
+    text-align: center; /* For centering search bar, etc. */
+}
+
+/* Existing styles below this point remain, but review for conflicts */
+/* ... (existing styles from your simplified style.css) ... */
