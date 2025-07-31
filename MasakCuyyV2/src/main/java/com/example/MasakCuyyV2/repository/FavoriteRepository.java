@@ -12,5 +12,5 @@ import java.util.Optional;
 @Repository
 public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     List<Favorite> findByUser(User user);
-    Optional<Favorite> findByUserAndRecipe(User user, Recipe recipe); // Untuk cek apakah sudah difavoritkan
+    Optional<Favorite> findByUserAndRecipe(User user, Recipe recipe); 
 }

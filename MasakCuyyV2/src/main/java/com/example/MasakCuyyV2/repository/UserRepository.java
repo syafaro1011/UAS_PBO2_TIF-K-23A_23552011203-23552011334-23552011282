@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByUsername(String username); // Akan digunakan untuk login
-    Optional<User> findByEmail(String email); // Bisa digunakan juga untuk login/register
+    Optional<User> findByUsername(String username); 
+    Optional<User> findByEmail(String email); 
 }

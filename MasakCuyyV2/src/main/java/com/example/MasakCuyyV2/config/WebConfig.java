@@ -13,9 +13,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // This maps requests starting with /uploads/ to the physical upload directory
+        
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:" + uploadDir + "/"); // IMPORTANT: The trailing slash is crucial!
-                // .setCachePeriod(0); // Optional: disable caching for development
+                .addResourceLocations("file:" + uploadDir + "/"); 
     }
 }

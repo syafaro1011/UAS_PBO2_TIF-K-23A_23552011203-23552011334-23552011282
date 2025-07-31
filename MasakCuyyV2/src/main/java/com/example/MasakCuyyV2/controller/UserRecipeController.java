@@ -29,8 +29,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
-// @RequestMapping("/my-recipes") // Anda bisa tambahkan ini jika ingin semua endpoint di controller ini diawali /my-recipes
-public class UserRecipeController { // Ubah nama kelas
+// @RequestMapping("/my-recipes") 
+public class UserRecipeController { 
 
     @Autowired
     private UserRepository userRepository;
@@ -45,7 +45,7 @@ public class UserRecipeController { // Ubah nama kelas
     private String uploadDir;
 
     // Menampilkan halaman "Resep Saya"
-    @GetMapping("/my-recipes") // <-- NEW PATH
+    @GetMapping("/my-recipes") 
     public String showMyRecipes(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
@@ -58,17 +58,17 @@ public class UserRecipeController { // Ubah nama kelas
 
             List<Recipe> userRecipes = recipeService.getRecipesByUser(currentUser);
             model.addAttribute("recipes", userRecipes);
-            // newRecipe sekarang akan memiliki field 'description' juga
-            model.addAttribute("newRecipe", new Recipe()); // Objek kosong untuk form tambah resep
+            
+            model.addAttribute("newRecipe", new Recipe()); 
         } else {
             return "redirect:/login?error";
         }
 
-        return "my-recipes-dashboard"; // <-- NEW TEMPLATE NAME
+        return "my-recipes-dashboard"; 
     }
 
     // Memproses form Tambah Resep
-    @PostMapping("/my-recipes/add") // <-- NEW PATH
+    @PostMapping("/my-recipes/add") 
     public String addRecipe(@ModelAttribute("newRecipe") Recipe newRecipe,
                             @RequestParam("imageFile") MultipartFile imageFile) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -93,9 +93,6 @@ public class UserRecipeController { // Ubah nama kelas
                         .collect(Collectors.joining("\n"))
             );
 
-            // Set the description from the newRecipe object received from the form
-            // No explicit @RequestParam for description is needed if it's part of @ModelAttribute Recipe
-            // newRecipe.setDescription(newRecipe.getDescription()); // This line is redundant if description is already bound by @ModelAttribute
 
             if (!imageFile.isEmpty()) {
                 try {
@@ -110,17 +107,17 @@ public class UserRecipeController { // Ubah nama kelas
                     return "redirect:/my-recipes?uploadError";
                 }
             } else {
-                newRecipe.setImageUrl(null); // Set to null if no image is uploaded
+                newRecipe.setImageUrl(null); 
             }
             recipeService.saveRecipe(newRecipe);
         } else {
             return "redirect:/login?error";
         }
-        return "redirect:/my-recipes"; // <-- REDIRECT KE PATH BARU
+        return "redirect:/my-recipes"; 
     }
 
     // Menampilkan halaman edit resep
-    @GetMapping("/my-recipes/edit/{id}") // <-- NEW PATH
+    @GetMapping("/my-recipes/edit/{id}") 
     public String showEditRecipeForm(@PathVariable Long id, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
@@ -142,9 +139,9 @@ public class UserRecipeController { // Ubah nama kelas
     }
 
     // Memproses form edit resep
-    @PostMapping("/my-recipes/edit/{id}") // <-- NEW PATH
+    @PostMapping("/my-recipes/edit/{id}") 
     public String updateRecipe(@PathVariable Long id,
-                               @ModelAttribute("recipe") Recipe updatedRecipe, // updatedRecipe sekarang akan berisi deskripsi juga
+                               @ModelAttribute("recipe") Recipe updatedRecipe, 
                                @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
@@ -197,11 +194,11 @@ public class UserRecipeController { // Ubah nama kelas
         } else {
             return "redirect:/my-recipes?recipeNotFound";
         }
-        return "redirect:/my-recipes"; // <-- REDIRECT KE PATH BARU
+        return "redirect:/my-recipes"; 
     }
 
     // Endpoint untuk Hapus Resep
-    @PostMapping("/my-recipes/delete/{id}") // <-- NEW PATH
+    @PostMapping("/my-recipes/delete/{id}") 
     public String deleteRecipe(@PathVariable Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
@@ -221,19 +218,17 @@ public class UserRecipeController { // Ubah nama kelas
                     Files.deleteIfExists(filePath);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    // Log error, tapi jangan menghentikan proses delete DB
+                    
                 }
             }
             recipeService.deleteRecipeById(id);
         } else {
             System.out.println("Attempted to delete non-existent recipe with ID: " + id);
         }
-        return "redirect:/my-recipes"; // <-- REDIRECT KE PATH BARU
+        return "redirect:/my-recipes"; 
     }
 
-    // Endpoint showRecipeDetail tetap di sini atau dipindah ke Home Controller
-    // Karena bisa diakses publik dan juga dari my-recipes
-    @GetMapping("/recipes/{id}") // <-- Tetap di sini atau pindah ke HomeController
+    @GetMapping("/recipes/{id}") 
     public String showRecipeDetail(@PathVariable Long id, Model model) {
         Optional<Recipe> recipeOptional = recipeService.getRecipeById(id);
 
@@ -257,13 +252,11 @@ public class UserRecipeController { // Ubah nama kelas
                 }
             } else {
                 model.addAttribute("isOwner", false);
-                model.addAttribute("isFavorited", false); // Bukan favorit jika tidak login
+                model.addAttribute("isFavorited", false); 
             }
             return "recipe-detail";
         } else {
-            // Updated redirect to a more general home/all recipes view if the recipe isn't found
-            // This is better for public access to /recipes/{id}
-            return "redirect:/"; // Redirect to public home page if recipe not found
+            return "redirect:/"; 
         }
     }
 }

@@ -24,8 +24,8 @@ public class AuthController {
     // Menampilkan halaman Register
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new User()); // Objek User kosong untuk form binding
-        return "register"; // Mengarah ke src/main/resources/templates/register.html
+        model.addAttribute("user", new User()); 
+        return "register"; 
     }
 
     // Memproses form Register
@@ -46,7 +46,7 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
-        return "redirect:/login?registered"; // Redirect ke halaman login dengan pesan sukses
+        return "redirect:/login?registered"; 
     }
 
     // Menampilkan halaman Login
@@ -60,6 +60,6 @@ public class AuthController {
         if (registered != null) {
             model.addAttribute("successMessage", "Registration successful! Please log in.");
         }
-        return "login"; // Mengarah ke src/main/resources/templates/login.html
+        return "login"; 
     }
 }

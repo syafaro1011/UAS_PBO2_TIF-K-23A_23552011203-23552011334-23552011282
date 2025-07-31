@@ -1,10 +1,10 @@
 package com.example.MasakCuyyV2.model;
 
 import jakarta.persistence.*;
-import java.util.List; // Import List
+import java.util.List; 
 
 @Entity
-@Table(name = "users") // Nama tabel di database
+@Table(name = "users") 
 public class User {
 
     @Id
@@ -21,7 +21,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Recipe> recipes; // Daftar resep yang dimiliki user ini
+    private List<Recipe> recipes; 
 
     // Constructors
     public User() {

@@ -21,10 +21,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
            "LOWER(r.instructions) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Recipe> searchRecipes(@Param("keyword") String keyword);
 
-    // FIX THIS METHOD:
-    // Ensure parameter names are explicitly used and match
-    @Query("SELECT r FROM Recipe r WHERE r.user = :recipeUser AND (" + // Renamed parameter from :user to :recipeUser
-           "LOWER(r.title) LIKE LOWER(CONCAT('%', :searchKeyword, '%')) OR " + // Renamed parameter from :keyword to :searchKeyword
+    @Query("SELECT r FROM Recipe r WHERE r.user = :recipeUser AND (" + 
+           "LOWER(r.title) LIKE LOWER(CONCAT('%', :searchKeyword, '%')) OR " + 
            "LOWER(r.description) LIKE LOWER(CONCAT('%', :searchKeyword, '%')) OR " +
            "LOWER(r.ingredients) LIKE LOWER(CONCAT('%', :searchKeyword, '%')) OR " +
            "LOWER(r.instructions) LIKE LOWER(CONCAT('%', :searchKeyword, '%')))")

@@ -36,20 +36,17 @@ public class RecipeService {
         return recipeRepository.save(recipe);
     }
 
-    // --- NEW: Untuk Dashboard Publik ---
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll(); 
     }
 
     public List<Recipe> searchRecipes(String keyword) {
-        // Jika keyword kosong atau null, kembalikan semua resep
         if (keyword == null || keyword.trim().isEmpty()) {
             return recipeRepository.findAll();
         }
         return recipeRepository.searchRecipes(keyword);
     }
 
-    // NEW: Method untuk pencarian resep milik user
     public List<Recipe> searchRecipesByUser(User user, String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return recipeRepository.findByUser(user);

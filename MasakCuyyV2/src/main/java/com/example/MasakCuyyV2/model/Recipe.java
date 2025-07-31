@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "recipes") // Nama tabel di database
+@Table(name = "recipes") 
 public class Recipe {
 
     @Id
@@ -14,7 +14,7 @@ public class Recipe {
     private String title;
 
     @Column(columnDefinition = "LONGTEXT")
-    private String description; // <-- NEW: Tambahkan atribut deskripsi
+    private String description; 
 
     @Column(columnDefinition = "LONGTEXT")
     private String ingredients;
@@ -25,10 +25,10 @@ public class Recipe {
     private String imageUrl;
 
     @ManyToOne // Banyak resep bisa dimiliki oleh satu user
-    @JoinColumn(name = "user_id", nullable = false) // Kolom foreign key di tabel recipes
-    private User user; // User yang membuat resep ini
+    @JoinColumn(name = "user_id", nullable = false) 
+    private User user; 
 
-    private LocalDateTime publishDate; // NEW: Tambahkan atribut publishDate
+    private LocalDateTime publishDate; 
 
     // Constructors
     public Recipe() {
@@ -38,7 +38,7 @@ public class Recipe {
     // Constructor utama yang akan sering digunakan
     public Recipe(String title, String description, String ingredients, String instructions, String imageUrl, User user) {
         this.title = title;
-        this.description = description; // <-- NEW: Inisialisasi deskripsi
+        this.description = description; 
         this.ingredients = ingredients;
         this.instructions = instructions;
         this.imageUrl = imageUrl;
@@ -49,7 +49,7 @@ public class Recipe {
     // Constructor opsional untuk data dummy (jika Anda butuh kontrol publishDate manual)
     public Recipe(String title, String description, String ingredients, String instructions, String imageUrl, User user, LocalDateTime publishDate) {
         this.title = title;
-        this.description = description; // <-- NEW: Inisialisasi deskripsi
+        this.description = description; 
         this.ingredients = ingredients;
         this.instructions = instructions;
         this.imageUrl = imageUrl;
@@ -74,7 +74,6 @@ public class Recipe {
         this.title = title;
     }
 
-    // NEW: Getter dan Setter untuk description
     public String getDescription() {
         return description;
     }

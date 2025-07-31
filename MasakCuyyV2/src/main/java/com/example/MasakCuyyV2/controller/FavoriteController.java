@@ -43,7 +43,7 @@ public String showMyFavorites(Model model) {
     } else {
         return "redirect:/login?error";
     }
-    return "my-favorites"; // Template HTML baru
+    return "my-favorites"; 
 }
 
 // Menambah/Menghapus resep ke/dari favorit
@@ -54,23 +54,23 @@ public String toggleFavorite(@PathVariable Long id) {
     Optional<User> currentUserOptional = userRepository.findByUsername(currentUsername);
 
     if (!currentUserOptional.isPresent()) {
-        return "redirect:/login"; // Harus login untuk favorite
+        return "redirect:/login"; 
     }
     User currentUser = currentUserOptional.get();
 
     Optional<Recipe> recipeOptional = recipeService.getRecipeById(id);
     if (!recipeOptional.isPresent()) {
-        return "redirect:/recipes/" + id + "?notFound"; // Resep tidak ditemukan
+        return "redirect:/recipes/" + id + "?notFound"; 
     }
     Recipe recipe = recipeOptional.get();
 
     Optional<Favorite> existingFavorite = favoriteService.getFavoriteByUserAndRecipe(currentUser, recipe);
 
     if (existingFavorite.isPresent()) {
-        favoriteService.deleteFavorite(existingFavorite.get()); // Hapus dari favorit
+        favoriteService.deleteFavorite(existingFavorite.get()); 
     } else {
         Favorite newFavorite = new Favorite(currentUser, recipe);
-        favoriteService.saveFavorite(newFavorite); // Tambah ke favorit
+        favoriteService.saveFavorite(newFavorite); 
     }
 
     // Redirect kembali ke halaman detail resep atau dashboard

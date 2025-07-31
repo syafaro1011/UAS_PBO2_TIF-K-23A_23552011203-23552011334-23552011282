@@ -22,7 +22,7 @@ public class HomeController {
     private RecipeService recipeService;
 
     @Autowired
-    private UserRepository userRepository; // Inject UserRepository untuk akses user info
+    private UserRepository userRepository; 
 
     // Update endpoint home untuk menerima parameter pencarian
     @GetMapping("/")
@@ -32,7 +32,7 @@ public class HomeController {
         if (keyword != null && !keyword.trim().isEmpty()) {
             // Jika ada keyword, lakukan pencarian
             recipes = recipeService.searchRecipes(keyword);
-            model.addAttribute("keyword", keyword); // Untuk menampilkan keyword di input search
+            model.addAttribute("keyword", keyword); 
         } else {
             // Jika tidak ada keyword, tampilkan semua resep
             recipes = recipeService.getAllRecipes();
@@ -51,6 +51,6 @@ public class HomeController {
             currentUserOptional.ifPresent(user -> model.addAttribute("user", user));
         }
 
-        return "home"; // Sesuaikan nama template utama Anda (misal: home.html)
+        return "home"; 
     }
 }
