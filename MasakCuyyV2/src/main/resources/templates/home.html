@@ -1,70 +1,226 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="id" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>MasakCuyy - Explore Recipes</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Jelajahi koleksi resep masakan Indonesia terlengkap di MasakCuyy - platform berbagi resep favorit">
+    <title>MasakCuyy - Jelajahi Resep Masakan</title>
+    <link rel="stylesheet" href="/css/homeStyle.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content="MasakCuyy - Jelajahi Resep Masakan">
+    <meta property="og:description" content="Temukan ribuan resep masakan Indonesia terbaik dari komunitas MasakCuyy">
+    <meta property="og:type" content="website">
 </head>
 <body>
-    <div class="navbar">
-        <h1>MasakCuyy</h1>
-        <div>
-            <span sec:authorize="isAuthenticated()">
-                <span class="user-info" th:text="'Hello, ' + ${user?.username} + '!'" th:if="${user}"></span>
-                <form th:action="@{/logout}" method="post" class="logout-form">
-                    <button type="submit" class="logout-button">Logout</button>
-                </form>
-            </span>
-            <span sec:authorize="!isAuthenticated()">
-                <a th:href="@{/login}">Login</a>
-                <a th:href="@{/register}">Register</a>
-            </span>
-        </div>
-    </div>
-
-    <div class="main-wrapper">
-        <div class="sidebar">
-            <a th:href="@{/}" class="sidebar-link active">Explore</a>
-            <span sec:authorize="isAuthenticated()">
-                <a th:href="@{/my-recipes}" class="sidebar-link">My Recipes</a>
-                <a th:href="@{/my-favorites}" class="sidebar-link">My Favorites</a>
-            </span>
-        </div>
-
-        <div class="main-content-wrapper">
-            <div class="content-area">
-                <div class="search-container">
-                    <form th:action="@{/}" method="get">
-                        <input type="text" name="keyword" placeholder="Search recipes..." th:value="${keyword}">
-                        <button type="submit">Search</button>
+    <!-- Header Navigation -->
+    <header class="header">
+        <nav class="navbar" role="navigation" aria-label="Main navigation">
+            <div class="navbar-brand">
+                <h1><a href="/" th:href="@{/}" class="brand-link">
+                    <i class="fas fa-utensils brand-icon"></i>
+                    MasakCuyy
+                </a></h1>
+            </div>
+            <div class="navbar-menu">
+                <div sec:authorize="isAuthenticated()" class="authenticated-menu">
+                    <div class="user-greeting">
+                        <i class="fas fa-user-circle user-icon"></i>
+                        <span class="user-info" th:text="'Halo, ' + ${user?.username} + '!'" th:if="${user}" aria-label="User greeting"></span>
+                    </div>
+                    <form th:action="@{/logout}" method="post" class="logout-form">
+                        <button type="submit" class="logout-button" aria-label="Logout from account">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </button>
                     </form>
                 </div>
-
-                <h2 style="margin-bottom: 20px;">All Recipes</h2>
-
-                <div th:if="${recipes.isEmpty()}" class="no-results">
-                    <p>No recipes found matching your search. Try a different keyword!</p>
-                    <p th:if="${keyword == null or keyword.trim().isEmpty()}">There are no recipes available yet.</p>
-                </div>
-
-                <div class="recipe-grid">
-                    <div th:each="recipe : ${recipes}" class="recipe-card">
-                        <div th:if="${recipe.imageUrl}">
-                            <img th:src="${recipe.imageUrl}" alt="Recipe Image">
-                        </div>
-                        <div class="card-content">
-                            <h3><a th:href="@{/recipes/{id}(id=${recipe.id})}" th:text="${recipe.title}">Recipe Title</a></h3>
-                            <p th:text="${recipe.description} ?: (${#strings.isEmpty(recipe.instructions) ? '' : #strings.substring(recipe.instructions, 0, #numbers.min(#strings.length(recipe.instructions), 100))} + '...')"></p>
-                            <p class="author">Published by: <span th:text="${recipe.user.username}"></span></p>
-                        </div>
-                        <div class="card-actions">
-                            <a th:href="@{/recipes/{id}(id=${recipe.id})}" class="detail-button">View Detail</a>
-                        </div>
-                    </div>
+                <div sec:authorize="!isAuthenticated()" class="guest-menu">
+                    <a th:href="@{/login}" class="nav-link login-link">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </a>
+                    <a th:href="@{/register}" class="nav-link register-link">
+                        <i class="fas fa-user-plus"></i>
+                        Register
+                    </a>
                 </div>
             </div>
-        </div>
+        </nav>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="main-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" role="navigation" aria-label="Secondary navigation">
+            <nav class="sidebar-nav">
+                <a th:href="@{/}" class="sidebar-link active" aria-current="page">
+                    <i class="fas fa-compass sidebar-icon"></i>
+                    <span class="sidebar-text">Jelajahi</span>
+                </a>
+                <div sec:authorize="isAuthenticated()" class="authenticated-sidebar">
+                    <a th:href="@{/my-recipes}" class="sidebar-link">
+                        <i class="fas fa-book sidebar-icon"></i>
+                        <span class="sidebar-text">Resep Saya</span>
+                    </a>
+                    <a th:href="@{/my-favorites}" class="sidebar-link">
+                        <i class="fas fa-heart sidebar-icon"></i>
+                        <span class="sidebar-text">Favorit Saya</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content-wrapper" role="main">
+            <div class="content-area">
+                <!-- Hero Section -->
+                <section class="hero-section">
+                    <div class="hero-content">
+                        <h1 class="hero-title">
+                            <i class="fas fa-fire hero-icon"></i>
+                            Jelajahi Resep Terbaik
+                        </h1>
+                        <p class="hero-subtitle">Temukan ribuan resep masakan Indonesia dari komunitas pecinta kuliner</p>
+                    </div>
+                </section>
+
+                <!-- Search Section -->
+                <section class="search-section" aria-label="Search recipes">
+                    <div class="search-container">
+                        <form th:action="@{/}" method="get" class="search-form" role="search">
+                            <div class="search-input-group">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" 
+                                       name="keyword" 
+                                       placeholder="Cari resep favorit Anda..." 
+                                       th:value="${keyword}"
+                                       class="search-input"
+                                       aria-label="Search recipes">
+                                <button type="submit" class="search-button" aria-label="Search">
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </form>
+                        <div th:if="${keyword}" class="search-results-info">
+                            <p class="search-keyword">
+                                <i class="fas fa-filter"></i>
+                                Hasil pencarian untuk: "<strong th:text="${keyword}">keyword</strong>"
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recipes Section -->
+                <section class="recipes-section" aria-label="Recipe collection">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-utensils-alt section-icon"></i>
+                            <span th:text="${#strings.isEmpty(keyword) ? 'Semua Resep' : 'Hasil Pencarian'}">Semua Resep</span>
+                            <span class="recipe-count" th:if="${recipes}" th:text="'(' + ${recipes.size()} + ' resep)'">(0 resep)</span>
+                        </h2>
+                    </div>
+
+                    <!-- No Results State -->
+                    <div th:if="${recipes.isEmpty()}" class="no-results">
+                        <div class="no-results-content">
+                            <i class="fas fa-search-minus no-results-icon"></i>
+                            <h3 class="no-results-title">Tidak Ada Resep Ditemukan</h3>
+                            <div th:if="${keyword}">
+                                <p class="no-results-text">Tidak ada resep yang cocok dengan pencarian "<strong th:text="${keyword}">keyword</strong>"</p>
+                                <p class="no-results-suggestion">Coba gunakan kata kunci yang berbeda atau lebih umum!</p>
+                            </div>
+                            <div th:unless="${keyword}">
+                                <p class="no-results-text">Belum ada resep yang tersedia saat ini.</p>
+                                <p class="no-results-suggestion">Jadilah yang pertama berbagi resep favorit Anda!</p>
+                            </div>
+                            <div class="no-results-actions">
+                                <a th:if="${keyword}" th:href="@{/}" class="btn btn-primary">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Lihat Semua Resep
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recipe Grid -->
+                    <div th:unless="${recipes.isEmpty()}" class="recipe-grid">
+                        <article th:each="recipe, iterStat : ${recipes}" class="recipe-card" th:attr="data-recipe-id=${recipe.id}">
+                            <!-- Recipe Image -->
+                            <div class="recipe-image-container">
+                                <div th:if="${recipe.imageUrl}" class="recipe-image-wrapper">
+                                    <img th:src="${recipe.imageUrl}" 
+                                         th:alt="'Gambar resep ' + ${recipe.title}" 
+                                         class="recipe-image"
+                                         loading="lazy">
+                                    <div class="image-overlay">
+                                        <i class="fas fa-eye overlay-icon"></i>
+                                    </div>
+                                </div>
+                                <div th:unless="${recipe.imageUrl}" class="recipe-image-placeholder">
+                                    <i class="fas fa-image placeholder-icon"></i>
+                                    <span class="placeholder-text">Tidak ada gambar</span>
+                                </div>
+                            </div>
+
+                            <!-- Recipe Content -->
+                            <div class="card-content">
+                                <header class="card-header">
+                                    <h3 class="recipe-title">
+                                        <a th:href="@{/recipes/{id}(id=${recipe.id})}" 
+                                           th:text="${recipe.title}"
+                                           class="recipe-link"
+                                           th:attr="aria-label='Lihat detail resep ' + ${recipe.title}">
+                                           Recipe Title
+                                        </a>
+                                    </h3>
+                                </header>
+
+                                <div class="card-body">
+                                    <p class="recipe-description" th:if="${recipe.description}" th:text="${#strings.length(recipe.description) > 120 ? #strings.substring(recipe.description, 0, 120) + '...' : recipe.description}">
+                                        Description
+                                    </p>
+                                    <p class="recipe-description" th:unless="${recipe.description}">
+                                        <em class="text-muted">Tidak ada deskripsi tersedia</em>
+                                    </p>
+                                </div>
+
+                                <footer class="card-footer">
+                                    <div class="recipe-meta">
+                                        <div class="author-info">
+                                            <i class="fas fa-user-chef author-icon"></i>
+                                            <span class="author-label">Oleh:</span>
+                                            <strong class="author-name" th:text="${recipe.user.username}">Author</strong>
+                                        </div>
+                                        <div class="publish-date" th:if="${recipe.publishDate}">
+                                            <i class="fas fa-calendar-alt date-icon"></i>
+                                            <time th:datetime="${recipe.publishDate}" 
+                                                  th:text="${#temporals.format(recipe.publishDate, 'dd MMM yyyy')}"
+                                                  class="date-text">
+                                                Date
+                                            </time>
+                                        </div>
+                                    </div>
+                                </footer>
+                            </div>
+
+                            <!-- Recipe Actions -->
+                            <div class="card-actions">
+                                <a th:href="@{/recipes/{id}(id=${recipe.id})}" 
+                                   class="detail-button btn btn-primary"
+                                   th:attr="aria-label='Lihat detail resep ' + ${recipe.title}">
+                                    <i class="fas fa-eye button-icon"></i>
+                                    <span class="button-text">Lihat Detail</span>
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+            </div>
+        </main>
     </div>
+
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 </body>
 </html>

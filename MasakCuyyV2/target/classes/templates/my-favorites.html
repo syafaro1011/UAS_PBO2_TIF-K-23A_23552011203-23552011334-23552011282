@@ -3,55 +3,226 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>My Favorite Recipes - MasakCuyy</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorite Resep - MasakCuyy</title>
+    <link rel="stylesheet" href="/css/homeStyle.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="navbar">
-        <h1>MasakCuyy</h1>
-        <div>
-            <span sec:authorize="isAuthenticated()">
-                <span class="user-info" th:text="'Hello, ' + ${user?.username} + '!'" th:if="${user}"></span>
-                <form th:action="@{/logout}" method="post" class="logout-form">
-                    <button type="submit" class="logout-button">Logout</button>
-                </form>
-            </span>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <a href="/" class="brand-link">
+                <i class="fas fa-utensils brand-icon"></i>
+                MasakCuyy
+            </a>
+            <div class="navbar-menu">
+                <div sec:authorize="isAuthenticated()" class="authenticated-menu">
+                    <div class="user-greeting" th:if="${user}">
+                        <i class="fas fa-user user-icon"></i>
+                        <span th:text="'Hello, ' + ${user?.username} + '!'">Hello, User!</span>
+                    </div>
+                    <form th:action="@{/logout}" method="post" style="margin: 0;">
+                        <button type="submit" class="logout-button">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </button>
+                    </form>
+                </div>
+                <div sec:authorize="!isAuthenticated()">
+                    <a href="/login" class="nav-link">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </a>
+                </div>
             </div>
-    </div>
+        </nav>
+    </header>
 
+    <!-- Main Wrapper -->
     <div class="main-wrapper">
-        <div class="sidebar">
-            <a th:href="@{/}" class="sidebar-link">Explore</a>
-            <a th:href="@{/my-recipes}" class="sidebar-link">My Recipes</a>
-            <a th:href="@{/my-favorites}" class="sidebar-link active">My Favorites</a> </div>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a th:href="@{/}" class="sidebar-link">
+                    <i class="fas fa-compass sidebar-icon"></i>
+                    Jelajahi
+                </a>
+                <a th:href="@{/my-recipes}" class="sidebar-link">
+                    <i class="fas fa-book sidebar-icon"></i>
+                    Resep Saya
+                </a>
+                <a th:href="@{/my-favorites}" class="sidebar-link active">
+                    <i class="fas fa-heart sidebar-icon"></i>
+                    Favorit Saya
+                </a>
+            </nav>
+        </aside>
 
-        <div class="main-content-wrapper">
+        <!-- Main Content -->
+        <main class="main-content-wrapper" id="main-content">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <i class="fas fa-heart hero-icon"></i>
+                        Favorite Resep Saya
+                    </h1>
+                    <p class="hero-subtitle">
+                        Koleksi resep kesayangan Anda, disimpan untuk kemudahan akses dan inspirasi memasak
+                    </p>
+                </div>
+            </section>
+
+            <!-- Content Area -->
             <div class="content-area">
-                <h1>My Favorite Recipes</h1>
-
-                <div th:if="${favorites.isEmpty()}" class="no-results">
-                    <p>You haven't favorited any recipes yet.</p>
+                <!-- Section Header -->
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-star section-icon"></i>
+                        Favotit Resep Tersimpan
+                        <span class="recipe-count" th:text="'(' + ${favorites.size()} + ' recipes)'">
+                            (0 recipes)
+                        </span>
+                    </h2>
                 </div>
 
-                <div class="recipe-grid">
-                    <div th:each="fav : ${favorites}" class="recipe-card">
-                        <div th:if="${fav.recipe.imageUrl}">
-                            <img th:src="${fav.recipe.imageUrl}" alt="Recipe Image">
-                        </div>
-                        <div class="card-content">
-                            <h3><a th:href="@{/recipes/{id}(id=${fav.recipe.id})}" th:text="${fav.recipe.title}">Recipe Title</a></h3>
-                            <p th:text="${fav.recipe.description} ?: (${#strings.isEmpty(fav.recipe.instructions) ? '' : #strings.substring(fav.recipe.instructions, 0, #numbers.min(#strings.length(fav.recipe.instructions), 100))} + '...')"></p>
-                            <p class="author">By: <span th:text="${fav.recipe.user.username}"></span></p>
-                        </div>
-                        <div class="card-actions">
-                            <form th:action="@{/recipes/{id}/toggle-favorite(id=${fav.recipe.id})}" method="post">
-                                <button type="submit" class="delete-button">Remove from Favorites</button>
-                            </form>
-                        </div>
+                <!-- No Results State -->
+                <div th:if="${favorites.isEmpty()}" class="no-results">
+                    <div class="no-results-content">
+                        <i class="fas fa-heart-broken no-results-icon"></i>
+                        <h3 class="no-results-title">Belum Ada Favorit Resep</h3>
+                        <p class="no-results-text">Anda belum memfavoritkan resep apa pun.</p>
+                        <p class="no-results-suggestion">
+                            Mulai jelajahi resep dan tambahkan ke favorit!
+                        </p>
+                        <a th:href="@{/}" class="btn btn-primary">
+                            <i class="fas fa-compass button-icon"></i>
+                            Jelajahi Resep
+                        </a>
                     </div>
                 </div>
+
+                <!-- Recipe Grid -->
+                <div th:if="${!favorites.isEmpty()}" class="recipe-grid">
+                    <article th:each="fav : ${favorites}" class="recipe-card">
+                        <!-- Recipe Image -->
+                        <div class="recipe-image-container">
+                            <div class="recipe-image-wrapper">
+                                <img th:if="${fav.recipe.imageUrl}" 
+                                     th:src="${fav.recipe.imageUrl}" 
+                                     th:alt="${fav.recipe.title} + ' image'"
+                                     class="recipe-image"
+                                     loading="lazy">
+                                <div th:unless="${fav.recipe.imageUrl}" class="recipe-image-placeholder">
+                                    <i class="fas fa-utensils placeholder-icon"></i>
+                                    <span class="placeholder-text">No Image Available</span>
+                                </div>
+                                <div class="image-overlay">
+                                    <i class="fas fa-eye overlay-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Content -->
+                        <div class="card-content">
+                            <header class="card-header">
+                                <h3 class="recipe-title">
+                                    <a th:href="@{/recipes/{id}(id=${fav.recipe.id})}" 
+                                       th:text="${fav.recipe.title}"
+                                       class="recipe-link">
+                                        Recipe Title
+                                    </a>
+                                </h3>
+                            </header>
+
+                            <div class="card-body">
+                                <p class="recipe-description" 
+                                   th:text="${fav.recipe.description} ?: (${#strings.isEmpty(fav.recipe.instructions) ? 'No description available.' : #strings.substring(fav.recipe.instructions, 0, #numbers.min(#strings.length(fav.recipe.instructions), 100))} + '...')">
+                                    Recipe description goes here...
+                                </p>
+                            </div>
+
+                            <footer class="card-footer">
+                                <div class="recipe-meta">
+                                    <div class="author-info">
+                                        <i class="fas fa-user-chef author-icon"></i>
+                                        <span>By: </span>
+                                        <span class="author-name" th:text="${fav.recipe.user.username}">Author Name</span>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+
+                        <!-- Card Actions -->
+                        <div class="card-actions">
+                            <form th:action="@{/recipes/{id}/toggle-favorite(id=${fav.recipe.id})}" 
+                                  method="post" 
+                                  style="width: 100%;">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-heart-broken button-icon"></i>
+                                    Hapus dari favorit
+                                </button>
+                            </form>
+                        </div>
+                    </article>
+                </div>
             </div>
-        </div>
+        </main>
     </div>
+
+    <!-- JavaScript for Enhanced Interactions -->
+    <script>
+        // Add loading animation when removing favorites
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function() {
+                const button = this.querySelector('button');
+                button.innerHTML = '<i class="fas fa-spinner fa-spin button-icon"></i>Processing...';
+                button.disabled = true;
+            });
+        });
+
+        // Add smooth animations for card hover effects
+        document.querySelectorAll('.recipe-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-12px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Lazy loading for images
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+
+            document.querySelectorAll('img[data-src]').forEach(img => imageObserver.observe(img));
+        }
+
+        // Add confirmation dialog for removing favorites
+        document.querySelectorAll('form button[type="submit"]').forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (this.textContent.includes('Remove')) {
+                    if (!confirm('Are you sure you want to remove this recipe from your favorites?')) {
+                        e.preventDefault();
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

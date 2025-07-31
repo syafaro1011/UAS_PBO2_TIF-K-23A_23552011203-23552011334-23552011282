@@ -5,123 +5,174 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Detail resep masakan di MasakCuyy - platform berbagi resep masakan Indonesia">
     <title th:text="${recipe.title} + ' - MasakCuyy'">Recipe - MasakCuyy</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/homeStyle.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <meta property="og:title" th:content="${recipe.title} + ' - MasakCuyy'">
     <meta property="og:description" th:content="${recipe.description}">
     <meta property="og:image" th:content="${recipe.imageUrl}">
     <meta property="og:type" content="article">
 </head>
 <body>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
     <header class="header">
         <nav class="navbar" role="navigation" aria-label="Main navigation">
-            <div class="navbar-brand">
-                <h1><a href="/" th:href="@{/}">MasakCuyy</a></h1>
-            </div>
+            <a href="/" th:href="@{/}" class="brand-link">
+                <i class="fas fa-utensils brand-icon"></i>
+                MasakCuyy
+            </a>
             <div class="navbar-menu">
                 <div sec:authorize="isAuthenticated()" class="authenticated-menu">
-                    <span class="user-info" th:text="'Halo, ' + ${user?.username} + '!'" th:if="${user}" aria-label="User greeting"></span>
-                    <form th:action="@{/logout}" method="post" class="logout-form">
-                        <button type="submit" class="logout-button" aria-label="Logout from account">Logout</button>
+                    <div class="user-greeting" th:if="${user}">
+                        <i class="fas fa-user user-icon"></i>
+                        <span th:text="'Halo, ' + ${user?.username} + '!'">Halo, User!</span>
+                    </div>
+                    <form th:action="@{/logout}" method="post" style="margin: 0;">
+                        <button type="submit" class="logout-button" aria-label="Logout from account">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </button>
                     </form>
                 </div>
                 <div sec:authorize="!isAuthenticated()" class="guest-menu">
-                    <a th:href="@{/login}" class="nav-link">Login</a>
-                    <a th:href="@{/register}" class="nav-link">Register</a>
+                    <a th:href="@{/login}" class="nav-link">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </a>
+                    <a th:href="@{/register}" class="nav-link">
+                        <i class="fas fa-user-plus"></i>
+                        Register
+                    </a>
                 </div>
             </div>
         </nav>
     </header>
 
+    <!-- Main Wrapper -->
     <div class="main-wrapper">
+        <!-- Sidebar -->
         <aside class="sidebar" role="navigation" aria-label="Secondary navigation">
             <nav class="sidebar-nav">
                 <a th:href="@{/}" class="sidebar-link active" aria-current="page">
-                    <span class="sidebar-icon">🏠</span>
+                    <i class="fas fa-compass sidebar-icon"></i>
                     Jelajahi
                 </a>
                 <div sec:authorize="isAuthenticated()" class="authenticated-sidebar">
                     <a th:href="@{/my-recipes}" class="sidebar-link">
-                        <span class="sidebar-icon">📖</span>
+                        <i class="fas fa-book sidebar-icon"></i>
                         Resep Saya
                     </a>
                     <a th:href="@{/my-favorites}" class="sidebar-link">
-                        <span class="sidebar-icon">❤️</span>
+                        <i class="fas fa-heart sidebar-icon"></i>
                         Favorit Saya
                     </a>
                 </div>
             </nav>
         </aside>
 
-        <main class="main-content-wrapper" role="main">
+        <!-- Main Content -->
+        <main class="main-content-wrapper" role="main" id="main-content">
             <article class="content-area recipe-detail-area">
-                <header class="recipe-header">
-                    <h1 th:text="${recipe.title}" class="recipe-title">Recipe Title</h1>
-                    <div class="recipe-meta">
-                        <p class="recipe-author">
-                            <span class="meta-label">Dibuat oleh:</span> 
-                            <strong th:text="${recipe.user.username}">Author</strong>
-                        </p>
-                        <p class="recipe-date">
-                            <span class="meta-label">Dipublikasi:</span>
-                            <time th:datetime="${recipe.publishDate}" 
-                                  th:text="${#temporals.format(recipe.publishDate, 'dd MMMM yyyy HH:mm')}">
-                                Date
-                            </time>
-                        </p>
+                
+                <!-- Recipe Hero Section -->
+                <section class="recipe-detail-hero">
+                    <div class="recipe-header-content">
+                        <h1 th:text="${recipe.title}" class="recipe-title-main">Recipe Title</h1>
+                        <div class="recipe-meta-hero">
+                            <div class="meta-item">
+                                <i class="fas fa-user-chef meta-icon"></i>
+                                <span>
+                                    <strong th:text="${recipe.user.username}">Author</strong>
+                                </span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-calendar-alt meta-icon"></i>
+                                <time th:datetime="${recipe.publishDate}" 
+                                      th:text="${#temporals.format(recipe.publishDate, 'dd MMM yyyy')}">
+                                    Date
+                                </time>
+                            </div>
+                        </div>
                     </div>
-                </header>
+                </section>
 
-                <figure th:if="${recipe.imageUrl}" class="recipe-image-container">
-                    <img th:src="${recipe.imageUrl}" 
-                         th:alt="'Gambar resep ' + ${recipe.title}" 
-                         class="recipe-image-detail"
-                         loading="lazy">
-                    <figcaption class="sr-only" th:text="'Foto dari resep ' + ${recipe.title}"></figcaption>
-                </figure>
+                <!-- Recipe Image -->
+                <section class="recipe-image-showcase">
+                    <figure th:if="${recipe.imageUrl}">
+                        <img th:src="${recipe.imageUrl}" 
+                             th:alt="'Gambar resep ' + ${recipe.title}" 
+                             class="recipe-image-detail"
+                             loading="lazy">
+                        <figcaption class="sr-only" th:text="'Foto dari resep ' + ${recipe.title}"></figcaption>
+                    </figure>
+                    <div th:unless="${recipe.imageUrl}" class="recipe-image-placeholder">
+                        <i class="fas fa-image placeholder-icon-large"></i>
+                        <p>Tidak ada gambar tersedia</p>
+                    </div>
+                </section>
 
+                <!-- Description Section -->
                 <section class="recipe-section" aria-labelledby="description-heading">
-                    <h2 id="description-heading">Deskripsi</h2>
+                    <h2 id="description-heading" class="section-title">
+                        <i class="fas fa-align-left section-icon"></i>
+                        Deskripsi
+                    </h2>
                     <div class="recipe-description">
-                        <p th:if="${recipe.description}" th:text="${recipe.description}">Description content</p>
+                        <div th:if="${recipe.description}" class="recipe-content" th:text="${recipe.description}">Description content</div>
                         <p th:unless="${recipe.description}" class="no-content-text">
-                            <em>Tidak ada deskripsi yang tersedia.</em>
+                            <i class="fas fa-info-circle"></i>
+                            Tidak ada deskripsi yang tersedia.
                         </p>
                     </div>
                 </section>
 
+                <!-- Ingredients Section -->
                 <section class="recipe-section" aria-labelledby="ingredients-heading">
-                    <h2 id="ingredients-heading">Bahan-bahan</h2>
+                    <h2 id="ingredients-heading" class="section-title">
+                        <i class="fas fa-list-ul section-icon"></i>
+                        Bahan-bahan
+                    </h2>
                     <div class="ingredients-container">
-                        <pre class="recipe-pre-format" 
+                        <div class="recipe-content" 
                              th:if="${!#strings.isEmpty(recipe.ingredients)}" 
-                             th:text="${recipe.ingredients}"></pre>
+                             th:text="${recipe.ingredients}"></div>
                         <p th:if="${recipe.ingredients == null or #strings.isEmpty(recipe.ingredients)}" 
                            class="no-content-text">
-                            <em>Tidak ada bahan yang tercantum.</em>
+                            <i class="fas fa-exclamation-circle"></i>
+                            Tidak ada bahan yang tercantum.
                         </p>
                     </div>
                 </section>
 
+                <!-- Instructions Section -->
                 <section class="recipe-section" aria-labelledby="instructions-heading">
-                    <h2 id="instructions-heading">Cara Memasak</h2>
+                    <h2 id="instructions-heading" class="section-title">
+                        <i class="fas fa-tasks section-icon"></i>
+                        Cara Memasak
+                    </h2>
                     <div class="instructions-container">
-                        <pre class="recipe-pre-format" 
+                        <div class="recipe-content" 
                              th:if="${!#strings.isEmpty(recipe.instructions)}" 
-                             th:text="${recipe.instructions}"></pre>
+                             th:text="${recipe.instructions}"></div>
                         <p th:if="${recipe.instructions == null or #strings.isEmpty(recipe.instructions)}" 
                            class="no-content-text">
-                            <em>Tidak ada instruksi yang tersedia.</em>
+                            <i class="fas fa-exclamation-circle"></i>
+                            Tidak ada instruksi yang tersedia.
                         </p>
                     </div>
                 </section>
 
+                <!-- Recipe Actions -->
                 <section class="recipe-actions-detail" aria-label="Recipe actions">
                     <div th:unless="${isOwner}" sec:authorize="isAuthenticated()" class="favorite-section">
                         <form th:action="@{/recipes/{id}/toggle-favorite(id=${recipe.id})}" method="post">
                             <button type="submit" 
                                     th:classappend="${isFavorited ? 'remove-favorite-button' : 'favorite-button'}"
                                     th:attr="aria-label=${isFavorited ? 'Hapus dari favorit' : 'Tambah ke favorit'}">
-                                <span class="button-icon" th:text="${isFavorited ? '💔' : '❤️'}">❤️</span>
+                                    <i th:class="${isFavorited ? 'fas fa-heart-broken' : 'fas fa-heart'}" th:classappend="button-icon"></i>
                                 <span th:text="${isFavorited ? 'Hapus dari Favorit' : 'Tambah ke Favorit'}">Add to Favorites</span>
                             </button>
                         </form>
@@ -131,7 +182,7 @@
                         <a th:href="@{/my-recipes/edit/{id}(id=${recipe.id})}" 
                            class="edit-button"
                            aria-label="Edit this recipe">
-                            <span class="button-icon">✏️</span>
+                            <i class="fas fa-edit button-icon"></i>
                             Edit Resep
                         </a>
                         <form th:action="@{/my-recipes/delete/{id}(id=${recipe.id})}" 
@@ -141,18 +192,19 @@
                             <button type="submit" 
                                     class="delete-button"
                                     aria-label="Delete this recipe">
-                                <span class="button-icon">🗑️</span>
+                                <i class="fas fa-trash button-icon"></i>
                                 Hapus Resep
                             </button>
                         </form>
                     </div>
                 </section>
 
+                <!-- Back Navigation -->
                 <nav class="back-navigation" aria-label="Back navigation">
                     <a th:href="@{${isOwner ? '/my-recipes' : '/'}}" 
                        class="back-button"
                        th:attr="aria-label=${isOwner ? 'Kembali ke halaman Resep Saya' : 'Kembali ke halaman Jelajahi'}">
-                        <span class="button-icon">⬅️</span>
+                        <i class="fas fa-arrow-left button-icon"></i>
                         <span th:text="${isOwner ? 'Kembali ke Resep Saya' : 'Kembali ke Jelajahi'}">Back</span>
                     </a>
                 </nav>
@@ -160,107 +212,95 @@
         </main>
     </div>
 
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <!-- JavaScript for Enhanced Interactions -->
+    <script>
+        // Add loading state to buttons
+        document.querySelectorAll('form button, form input[type="submit"]').forEach(button => {
+            button.addEventListener('click', function() {
+                if (this.type === 'submit') {
+                    setTimeout(() => {
+                        this.classList.add('loading-button');
+                        this.disabled = true;
+                    }, 100);
+                }
+            });
+        });
 
-    <style>
-        /* Additional CSS for improved accessibility and UX */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 6px;
-            background: #000;
-            color: white;
-            padding: 8px;
-            text-decoration: none;
-            z-index: 1000;
-        }
-
-        .skip-link:focus {
-            top: 6px;
-        }
-
-        .recipe-meta {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-        }
-
-        .meta-label {
-            font-weight: normal;
-            color: #666;
-        }
-
-        .button-icon {
-            margin-right: 0.5rem;
-        }
-
-        .sidebar-icon {
-            margin-right: 0.5rem;
-        }
-
-        /* --- REMOVED: .ingredient-item, .instruction-item, .step-number as they are no longer used with <pre> --- */
-        /*
-        .ingredient-item,
-        .instruction-item {
-            margin-bottom: 0.5rem;
-            line-height: 1.5;
-        }
-
-        .step-number {
-            font-weight: bold;
-            margin-right: 0.5rem;
-            color: #007bff;
-        }
-        */
-
-        .owner-actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .delete-form {
-            display: inline;
-        }
-
-        /* NEW CSS FOR <pre> TAG */
-        .recipe-pre-format {
-            background-color: #f8f8f8; /* Light background to visually distinguish */
-            padding: 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            white-space: pre-wrap; /* Crucial: Preserves newlines and spaces, but allows wrapping */
-            word-wrap: break-word; /* Helps with very long words */
-            font-family: inherit; /* Inherit font from parent, not monospace default */
-            font-size: 1.05em; /* Slightly larger font for readability */
-            line-height: 1.8; /* Good spacing between lines */
-            color: #444; /* Darker text color */
-        }
-
-
-        @media (max-width: 768px) {
-            .recipe-meta {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
+        // Enhanced delete confirmation
+        document.querySelector('.delete-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            .owner-actions {
-                flex-direction: column;
+            const confirmDialog = confirm('Apakah Anda yakin ingin menghapus resep ini?\n\nTindakan ini tidak dapat dibatalkan.');
+            
+            if (confirmDialog) {
+                const button = this.querySelector('button');
+                button.innerHTML = '<i class="fas fa-spinner fa-spin button-icon"></i>Menghapus...';
+                button.disabled = true;
+                this.submit();
             }
+        });
+
+        // Image zoom functionality
+        const recipeImage = document.querySelector('.recipe-image-detail');
+        if (recipeImage) {
+            recipeImage.addEventListener('click', function() {
+                if (this.style.transform === 'scale(1.5)') {
+                    this.style.transform = 'scale(1)';
+                    this.style.cursor = 'zoom-in';
+                } else {
+                    this.style.transform = 'scale(1.5)';
+                    this.style.cursor = 'zoom-out';
+                }
+            });
+            
+            recipeImage.style.cursor = 'zoom-in';
         }
-    </style>
+
+        // Smooth scrolling for skip link
+        document.querySelector('.skip-link')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('#main-content').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+
+        // Add animation to recipe sections on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.recipe-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+
+        // Add print functionality
+        function printRecipe() {
+            window.print();
+        }
+
+        // Keyboard navigation enhancement
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const zoomedImage = document.querySelector('.recipe-image-detail[style*="scale(1.5)"]');
+                if (zoomedImage) {
+                    zoomedImage.style.transform = 'scale(1)';
+                    zoomedImage.style.cursor = 'zoom-in';
+                }
+            }
+        });
+    </script>
 </body>
 </html>

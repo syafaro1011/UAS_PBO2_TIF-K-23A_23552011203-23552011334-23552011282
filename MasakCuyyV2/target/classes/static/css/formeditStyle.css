@@ -1,0 +1,272 @@
+/* Additional styles for form elements */
+.form-container {
+    background: var(--background-white);
+    border-radius: var(--border-radius);
+    padding: 2.5rem;
+    box-shadow: var(--shadow-medium);
+    border: 2px solid var(--border-color);
+    margin-bottom: 2rem;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.form-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+    color: var(--text-light);
+    font-size: 1.1rem;
+}
+
+.form-group {
+    margin-bottom: 2rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-input,
+.form-textarea,
+.form-file {
+    width: 100%;
+    padding: 1.2rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    color: var(--text-dark);
+    background: var(--background-light);
+    transition: var(--transition);
+    font-family: inherit;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-file:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: var(--background-white);
+    box-shadow: var(--shadow-light);
+    transform: translateY(-2px);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-textarea.large {
+    min-height: 180px;
+}
+
+.form-file {
+    padding: 1rem;
+    background: var(--background-white);
+    border-style: dashed;
+    cursor: pointer;
+}
+
+.form-file:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-light);
+}
+
+.current-image-preview {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--primary-light);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.current-image-preview img {
+    max-width: 200px;
+    max-height: 150px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+    margin-top: 0.5rem;
+}
+
+.current-image-preview small {
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border-color);
+}
+
+.primary-button {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--text-dark);
+    border: 2px solid var(--primary-dark);
+    padding: 1.2rem 2.5rem;
+    border-radius: var(--border-radius);
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    text-decoration: none;
+    min-width: 180px;
+    justify-content: center;
+}
+
+.primary-button:hover {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-heavy);
+    border-color: var(--accent-color);
+}
+
+.secondary-button {
+    background: var(--background-white);
+    color: var(--text-dark);
+    border: 2px solid var(--border-color);
+    padding: 1.2rem 2.5rem;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    text-decoration: none;
+    min-width: 180px;
+    justify-content: center;
+}
+
+.secondary-button:hover {
+    background: var(--primary-light);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+.back-link-container {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.recipe-name-highlight {
+    color: var(--accent-color);
+    font-weight: 800;
+}
+
+.form-icon {
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.required-indicator {
+    color: var(--accent-color);
+    font-size: 0.9rem;
+}
+
+/* File upload enhancement */
+.file-upload-wrapper {
+    position: relative;
+}
+
+.file-upload-label {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.2rem;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--background-white);
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-light);
+}
+
+.file-upload-label:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-light);
+    color: var(--text-dark);
+}
+
+.file-upload-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.file-upload-icon {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.file-upload-text {
+    flex: 1;
+}
+
+/* Progress indicator */
+.form-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--primary-light);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.progress-step {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.progress-step.active {
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+.progress-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+}
+
+.progress-step.active .progress-icon {
+    background: var(--accent-color);
+    color: white;
+}
