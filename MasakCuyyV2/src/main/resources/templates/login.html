@@ -3,28 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Login to MasakCuyy</title>
-    <link rel="stylesheet" href="/css/style.css"> </head>
-<body>
-    <div class="container">
-        <h1>Login to MasakCuyy</h1>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="centered-body"> <div class="auth-container"> <h1>Login to MasakCuyy</h1>
 
         <div th:if="${errorMessage}" class="alert error" th:text="${errorMessage}"></div>
         <div th:if="${successMessage}" class="alert success" th:text="${successMessage}"></div>
 
         <form th:action="@{/login}" method="post">
-            <div>
-                <label for="username">Username:</label>
+            <div class="form-group"> <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
             </div>
-            <div>
+            <div class="form-group">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <div>
-                <button type="submit">Login</button>
+            <div class="form-actions"> <button type="submit" class="primary-button">Login</button>
             </div>
         </form>
-        <p>Don't have an account? <a href="/register">Register here</a></p>
+        <p class="auth-switch-text">Don't have an account? <a href="/register">Register here</a></p>
     </div>
 </body>
 </html>

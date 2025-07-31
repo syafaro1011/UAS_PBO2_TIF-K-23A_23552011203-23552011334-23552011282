@@ -1,45 +1,73 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> <head>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
     <meta charset="UTF-8">
-    <title th:text="'Edit ' + ${recipe.title}"></title>
+    <title th:text="'Edit ' + ${recipe.title} + ' - MasakCuyy'"></title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Edit Recipe: <span th:text="${recipe.title}"></span></h1>
+    <div class="navbar">
+        <h1>MasakCuyy</h1>
+        <div>
+            <span sec:authorize="isAuthenticated()">
+                <span class="user-info" th:text="'Hello, ' + ${user?.username} + '!'" th:if="${user}"></span>
+                <form th:action="@{/logout}" method="post" class="logout-form">
+                    <button type="submit" class="logout-button">Logout</button>
+                </form>
+            </span>
+            <span sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}">Login</a>
+                <a th:href="@{/register}">Register</a>
+            </span>
+        </div>
+    </div>
 
-        <form th:action="@{/my-recipes/edit/{id}(id=${recipe.id})}" th:object="${recipe}" method="post" enctype="multipart/form-data">
-            <div>
-                <label for="title">Title:</label>
-                <input type="text" id="title" th:field="*{title}" required>
-            </div>
-            <div>
-                <label for="description">Description:</label>
-                <textarea id="description" th:field="*{description}" rows="3"></textarea> 
-            </div>
-            <div>
-                <label for="ingredients">Ingredients:</label>
-                <textarea id="ingredients" th:field="*{ingredients}" required></textarea>
-            </div>
-            <div>
-                <label for="instructions">Instructions:</label>
-                <textarea id="instructions" th:field="*{instructions}" required></textarea>
-            </div>
-            <div>
-                <label for="imageFile">Change Image (optional):</label>
-                <input type="file" id="imageFile" name="imageFile" accept="image/*">
-                <div th:if="${recipe.imageUrl}" class="current-image-preview">
-                    <small>Current Image:</small><br>
-                    <img th:src="${recipe.imageUrl}" alt="Current Recipe Image">
+    <div class="main-wrapper">
+        <div class="sidebar">
+            <a th:href="@{/}" class="sidebar-link">Explore</a>
+            <a th:href="@{/my-recipes}" class="sidebar-link active">My Recipes</a> 
+            <span sec:authorize="isAuthenticated()">
+                <a th:href="@{/my-favorites}" class="sidebar-link">My Favorites</a>
+            </span>
+        </div>
+
+        <div class="main-content-wrapper">
+            <div class="content-area">
+                <div class="add-recipe-form-area">
+                    <h1>Edit Recipe: <span th:text="${recipe.title}"></span></h1>
+
+                    <form th:action="@{/my-recipes/edit/{id}(id=${recipe.id})}" th:object="${recipe}" method="post" enctype="multipart/form-data">
+                        <div class="form-group"> <label for="title">Title:</label>
+                            <input type="text" id="title" th:field="*{title}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description:</label>
+                            <textarea id="description" th:field="*{description}" rows="3"></textarea> 
+                        </div>
+                        <div class="form-group">
+                            <label for="ingredients">Ingredients:</label>
+                            <textarea id="ingredients" th:field="*{ingredients}" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="instructions">Instructions:</label>
+                            <textarea id="instructions" th:field="*{instructions}" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="imageFile">Change Image (optional):</label>
+                            <input type="file" id="imageFile" name="imageFile" accept="image/*">
+                            <div th:if="${recipe.imageUrl}" class="current-image-preview">
+                                <small>Current Image:</small><br>
+                                <img th:src="${recipe.imageUrl}" alt="Current Recipe Image">
+                            </div>
+                        </div>
+                        <div class="form-actions"> <button type="submit" class="primary-button">Update Recipe</button>
+                        </div>
+                    </form>
+                    <div class="back-link-container"> <a href="/my-recipes" class="back-button">Back to My Recipes</a>
+                    </div>
                 </div>
             </div>
-            <div>
-                <button type="submit">Update Recipe</button>
-            </div>
-        </form>
-        <div class="back-link">
-            <a href="/my-recipes">Back to My Recipes</a>
         </div>
     </div>
 </body>

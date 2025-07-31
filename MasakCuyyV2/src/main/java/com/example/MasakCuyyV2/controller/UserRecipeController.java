@@ -26,6 +26,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 // @RequestMapping("/my-recipes") // Anda bisa tambahkan ini jika ingin semua endpoint di controller ini diawali /my-recipes
@@ -77,6 +78,20 @@ public class UserRecipeController { // Ubah nama kelas
         if (currentUserOptional.isPresent()) {
             User currentUser = currentUserOptional.get();
             newRecipe.setUser(currentUser);
+
+            // === CLEAN INPUT ===
+            newRecipe.setIngredients(
+                newRecipe.getIngredients().lines()
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())
+                        .collect(Collectors.joining("\n"))
+            );
+            newRecipe.setInstructions(
+                newRecipe.getInstructions().lines()
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())
+                        .collect(Collectors.joining("\n"))
+            );
 
             // Set the description from the newRecipe object received from the form
             // No explicit @RequestParam for description is needed if it's part of @ModelAttribute Recipe
@@ -143,10 +158,22 @@ public class UserRecipeController { // Ubah nama kelas
             if (!existingRecipe.getUser().getId().equals(currentUser.getId())) { return "redirect:/my-recipes?unauthorized"; }
 
             existingRecipe.setTitle(updatedRecipe.getTitle());
-            // NEW: Set the description from the updatedRecipe object
             existingRecipe.setDescription(updatedRecipe.getDescription());
-            existingRecipe.setIngredients(updatedRecipe.getIngredients());
-            existingRecipe.setInstructions(updatedRecipe.getInstructions());
+            // === CLEAN INPUT ===
+        existingRecipe.setIngredients(
+            updatedRecipe.getIngredients().lines()
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .collect(Collectors.joining("\n"))
+        );
+        existingRecipe.setInstructions(
+            updatedRecipe.getInstructions().lines()
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .collect(Collectors.joining("\n"))
+        );
+
+            
 
             if (imageFile != null && !imageFile.isEmpty()) {
                 try {

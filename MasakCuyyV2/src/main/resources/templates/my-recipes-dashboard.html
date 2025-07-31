@@ -3,32 +3,40 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title th:text="'My Recipes - ' + ${user.username}">My Recipes - MasakCuyy</title>
+    <title th:text="'My Recipes - ' + ${user.username} + ' - MasakCuyy'"></title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="navbar">
         <h1>MasakCuyy</h1>
         <div>
-            <span class="user-info" th:text="'Hello, ' + ${user.username} + '!'">Hello, User!</span>
-            <form th:action="@{/logout}" method="post" class="logout-form">
-                <button type="submit" class="logout-button">Logout</button>
-            </form>
+            <span sec:authorize="isAuthenticated()">
+                <span class="user-info" th:text="'Hello, ' + ${user?.username} + '!'" th:if="${user}"></span>
+                <form th:action="@{/logout}" method="post" class="logout-form">
+                    <button type="submit" class="logout-button">Logout</button>
+                </form>
+            </span>
+            <span sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}">Login</a>
+                <a th:href="@{/register}">Register</a>
+            </span>
         </div>
     </div>
 
     <div class="main-wrapper">
         <div class="sidebar">
             <a th:href="@{/}" class="sidebar-link">Explore</a>
-            <a th:href="@{/my-recipes}" class="sidebar-link active">My Recipes</a> <a th:href="@{/my-favorites}" class="sidebar-link">My Favorites</a>
+            <a th:href="@{/my-recipes}" class="sidebar-link active">My Recipes</a> 
+            <span sec:authorize="isAuthenticated()">
+                <a th:href="@{/my-favorites}" class="sidebar-link">My Favorites</a>
+            </span>
         </div>
 
         <div class="main-content-wrapper">
             <div class="content-area">
                 <div class="section-header">
                     <h2>My Recipes</h2>
-                    <a th:href="@{/my-recipes#addRecipeForm}" class="add-recipe-button">Add New Recipe</a>
-                </div>
+                    <a th:href="@{/my-recipes#addRecipeForm}" class="primary-button">Add New Recipe</a> </div>
 
                 <div th:if="${recipes.isEmpty()}" class="no-results">
                     <p>You haven't added any recipes yet. Click "Add New Recipe" above to get started!</p>
@@ -36,14 +44,16 @@
 
                 <div class="recipe-grid">
                     <div th:each="recipe : ${recipes}" class="recipe-card">
-                        <div th:if="${recipe.imageUrl}">
-                            <img th:src="${recipe.imageUrl}" alt="Recipe Image">
-                        </div>
-                        <div class="card-content">
-                            <h3><a th:href="@{/recipes/{id}(id=${recipe.id})}" th:text="${recipe.title}">Recipe Title</a></h3>
-                            <p th:text="${recipe.description} ?: (${#strings.isEmpty(recipe.instructions) ? '' : #strings.substring(recipe.instructions, 0, #numbers.min(#strings.length(recipe.instructions), 100))} + '...')"></p>
-                            <p class="author">Published by: <span th:text="${recipe.user.username}"></span></p>
-                        </div>
+                        <a th:href="@{/recipes/{id}(id=${recipe.id})}" class="recipe-card-link-wrapper">
+                            <div th:if="${recipe.imageUrl}" class="recipe-card-image">
+                                <img th:src="${recipe.imageUrl}" th:alt="${recipe.title} + ' Image'">
+                            </div>
+                            <div class="card-content">
+                                <h3><span th:text="${recipe.title}">Recipe Title</span></h3>
+                                <p class="recipe-card-description" th:text="${recipe.description} ?: (${#strings.isEmpty(recipe.instructions) ? '' : (#strings.length(recipe.instructions) > 100 ? #strings.substring(recipe.instructions, 0, 100) + '...' : recipe.instructions)})"></p>
+                                <p class="author">Published by: <span th:text="${recipe.user.username}"></span></p>
+                            </div>
+                        </a>
                         <div class="card-actions">
                             <a th:href="@{/my-recipes/edit/{id}(id=${recipe.id})}" class="edit-button">Edit</a>
                             <form th:action="@{/my-recipes/delete/{id}(id=${recipe.id})}" method="post" style="display: inline;">
@@ -56,28 +66,28 @@
                 <div id="addRecipeForm" class="add-recipe-form-area">
                     <h2>Add New Recipe</h2>
                     <form th:action="@{/my-recipes/add}" th:object="${newRecipe}" method="post" enctype="multipart/form-data">
-                        <div>
+                        <div class="form-group">
                             <label for="recipeTitle">Title:</label>
                             <input type="text" id="recipeTitle" th:field="*{title}" required>
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label for="recipeDescription">Description:</label>
-                            <textarea id="recipeDescription" th:field="*{description}" rows="3"></textarea>
+                            <textarea id="recipeDescription" th:field="*{description}" rows="3" placeholder="A short overview of your recipe."></textarea>
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label for="recipeIngredients">Ingredients:</label>
-                            <textarea id="recipeIngredients" th:field="*{ingredients}" required></textarea>
+                            <textarea id="recipeIngredients" th:field="*{ingredients}" rows="5" required placeholder="Enter each ingredient on a new line. Example:&#10;1 cup flour&#10;2 eggs&#10;1 tsp salt"></textarea>
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label for="recipeInstructions">Instructions:</label>
-                            <textarea id="recipeInstructions" th:field="*{instructions}" required></textarea>
+                            <textarea id="recipeInstructions" th:field="*{instructions}" rows="8" required placeholder="Enter each step on a new line. Example:&#10;1. Mix dry ingredients.&#10;2. Add wet ingredients.&#10;3. Bake at 180C for 20 mins."></textarea>
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label for="imageFile">Recipe Image:</label>
                             <input type="file" id="imageFile" name="imageFile" accept="image/*">
                         </div>
-                        <div>
-                            <button type="submit">Add Recipe</button>
+                        <div class="form-actions">
+                            <button type="submit" class="primary-button">Add Recipe</button>
                         </div>
                     </form>
                 </div>
